@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Reflection.Emit;
 using System.Text;
 using GymManagement.Core.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymManagement.Infrastructure.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-        }
 
         // الـ DbSets السبعة بتوعنا
         public DbSet<Member> Members { get; set; }
