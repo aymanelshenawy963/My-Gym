@@ -205,7 +205,7 @@ public class AuthService(
 
         if (result.Succeeded)
         {
-            //await _userManager.AddToRoleAsync(user, DefaultRoles.Member.Name);
+            await _userManager.AddToRoleAsync(user, DefaultRoles.Member.Name);
             return Result.Success();
         }
 
@@ -230,6 +230,25 @@ public class AuthService(
         await SendConfirmationEmail(user, code);
 
         return Result.Success();
+    }
+
+
+
+    public async Task<Result> SendResetPasswordCodeAsync(string email)
+    {
+        if (await _userManager.FindByEmailAsync(email) is not { } user)
+            return Result.Success();
+
+        if (!user.EmailConfirmed)
+            return Result.Failure(UsersErrors.EmailNotConfirmed with { StatusCode = StatusCodes.Status400BadRequest });
+
+        var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+        _logger.LogInformation("Reset code: {code}", code);
+
+        await SendResetPasswordEmail(user, code);
+        return Result.Success();
+
     }
 
     public async Task<Result> ResetPasswordAsync(ResetPasswordRequest request)
@@ -259,10 +278,17 @@ public class AuthService(
     }
 
 
-
-
-
-
+    private async Task SendResetPasswordEmail(ApplicationUser user, string code)
+    {
+        var origin = _httpContextAccessor.HttpContext?.Request.Headers.Origin;
+        var emailBody = EmailBodyBuilder.GenerateEmailBody("ForgetPassword",
+            templateModel: new Dictionary<string, string>
+            {
+                {"{{name}}", user.FirstName},
+                {"{{action_url}}", $"{origin}/auth/forgetPassword?email={user.Email}&code={code}" }
+            });
+      await _emailSender.SendEmailAsync(user.Email!, "✅ Gym : Change Password", emailBody);
+    }
 
     private static string GenerateRefreshToken()
     {

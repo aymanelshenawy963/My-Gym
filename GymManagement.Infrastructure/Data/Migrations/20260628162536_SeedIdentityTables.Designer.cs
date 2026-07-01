@@ -4,6 +4,7 @@ using GymManagement.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GymManagement.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260628162536_SeedIdentityTables")]
+    partial class SeedIdentityTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,21 +69,12 @@ namespace GymManagement.Infrastructure.Data.Migrations
                         },
                         new
                         {
-                            Id = "0197d000-ac5d-7eef-a708-093bf42c7565",
-                            ConcurrencyStamp = "0197d000-ac5d-7eef-a708-093cfad648bb",
-                            IsDefault = false,
-                            IsDeleted = false,
-                            Name = "Trainer",
-                            NormalizedName = "TRAINER"
-                        },
-                        new
-                        {
                             Id = "0197cf4a-ac5d-7eef-a708-093d426d0794",
                             ConcurrencyStamp = "0197cf4a-ac5d-7eef-a708-093e31470a2b",
                             IsDefault = true,
                             IsDeleted = false,
-                            Name = "Member",
-                            NormalizedName = "MEMBER"
+                            Name = "Customer",
+                            NormalizedName = "CUSTOMER"
                         });
                 });
 

@@ -17,5 +17,13 @@ public static class DefaultRoles
         public const string ConcurrencyStamp = "0197cf4a-ac5d-7eef-a708-093e31470a2b";
     }
 
+    public partial class Trainer
+    {
+        public const string Name = nameof(Trainer);
+        public const string Id = "0197d000-ac5d-7eef-a708-093bf42c7565";
+        public const string ConcurrencyStamp = "0197d000-ac5d-7eef-a708-093cfad648bb";
+    }
+
+
 
 }

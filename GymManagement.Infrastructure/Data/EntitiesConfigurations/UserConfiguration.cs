@@ -1,4 +1,5 @@
-﻿using GymManagement.Core.Entities;
+﻿using GymManagement.Core.Abstractions.Const;
+using GymManagement.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -23,19 +24,19 @@ public class UserConfiguration : IEntityTypeConfiguration<ApplicationUser>
 
 
         //Default Data
-        //builder.HasData(new ApplicationUser
-        //{
-        //    Id = DefaultUsers.Admin.Id,
-        //    FirstName = "Survey Basket",
-        //    LastName = "Admin",
-        //    UserName = DefaultUsers.Admin.Email,
-        //    NormalizedUserName = DefaultUsers.Admin.Email.ToUpper(),
-        //    Email = DefaultUsers.Admin.Email,
-        //    NormalizedEmail = DefaultUsers.Admin.Email.ToUpper(),
-        //    SecurityStamp = DefaultUsers.Admin.SecurityStamp,
-        //    ConcurrencyStamp = DefaultUsers.Admin.ConcurrencyStamp,
-        //    EmailConfirmed = true,
-        //    PasswordHash = DefaultUsers.Admin.PasswordHash
-        //});
+        builder.HasData(new ApplicationUser
+        {
+            Id = DefaultUsers.Admin.Id,
+            FirstName = "Ayman",
+            LastName = "Elshenawy",
+            UserName = DefaultUsers.Admin.UserName,
+            NormalizedUserName = DefaultUsers.Admin.UserName.ToUpper(),
+            Email = DefaultUsers.Admin.Email,
+            NormalizedEmail = DefaultUsers.Admin.Email.ToUpper(),
+            SecurityStamp = DefaultUsers.Admin.SecurityStamp,
+            ConcurrencyStamp = DefaultUsers.Admin.ConcurrencyStamp,
+            EmailConfirmed = true,
+            PasswordHash = DefaultUsers.Admin.PasswordHash
+        });
     }
 }

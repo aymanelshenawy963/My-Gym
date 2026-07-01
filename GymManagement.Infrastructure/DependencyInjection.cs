@@ -2,8 +2,10 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using GymManagement.Core.Entities;
+using GymManagement.Core.Errors;
 using GymManagement.Core.Interfaces.Authentication;
 using GymManagement.Core.Interfaces.IServices;
+using GymManagement.Core.Mapping;
 using GymManagement.Core.Settings;
 using GymManagement.Infrastructure.Data;
 using GymManagement.Infrastructure.Repositories.Authentication;
@@ -45,7 +47,11 @@ public static class DependencyInjection
 
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IEmailSender, EmailService>();
+        services.AddScoped<IUserSerivce, UserSerivce>();    
+        services.AddScoped<IRoleService,RoleService>();
 
+
+        services.AddExceptionHandler<GlobalExceptionHandelar>();
         services.AddProblemDetails();
         services.AddHttpContextAccessor();
 
@@ -60,7 +66,7 @@ public static class DependencyInjection
     private static IServiceCollection AddMapsterConfig(this IServiceCollection services)
     {
         var mappingConfig = TypeAdapterConfig.GlobalSettings;
-        mappingConfig.Scan(Assembly.GetExecutingAssembly());
+        mappingConfig.Scan(typeof(MappingConfigurations).Assembly);
 
         services.AddSingleton<IMapper>(new Mapper(mappingConfig));
 
@@ -79,12 +85,9 @@ public static class DependencyInjection
 
     private static IServiceCollection AddAuthConfig(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddIdentity<ApplicationUser, IdentityRole>()
+        services.AddIdentity<ApplicationUser, ApplicationRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
-
-        //services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();
-        //services.AddTransient<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
 
         services.AddSingleton<IJwtProvider, JwtProvider>();
 
